@@ -3,89 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Update - Proposal</title>
+    <title>Sistem Yenilənməsi - Təklif</title>
     <style>
-        body { background-color: #000; color: #0f0; font-family: 'Courier New', Courier, monospace; overflow-x: hidden; margin: 0; }
-        #terminal { padding: 20px; font-size: 16px; line-height: 1.5; }
-        .hidden { display: none; }
-        #gallery { text-align: center; padding: 20px; }
-        img { max-width: 90%; max-height: 60vh; border: 2px solid #0f0; margin-top: 20px; box-shadow: 0 0 15px #0f0; }
-        .caption { margin-top: 15px; font-size: 20px; font-weight: bold; }
-        .btn { background: #0f0; color: #000; border: none; padding: 15px 30px; font-size: 18px; cursor: pointer; margin: 10px; font-weight: bold; }
-        #final-screen { text-align: center; padding-top: 100px; height: 100vh; }
-        .cursor { display: inline-block; width: 10px; height: 20px; background: #0f0; animation: blink 0.7s infinite; }
-        @keyframes blink { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
+        body { background-color: #000; color: #0f0; font-family: 'Courier New', Courier, monospace; overflow: hidden; margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; cursor: pointer; }
+        #terminal { padding: 20px; font-size: 18px; line-height: 1.6; text-align: left; width: 90%; max-width: 600px; }
+        .hidden { display: none !important; }
+        #gallery { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000; }
+        img { max-width: 85%; max-height: 65vh; border: 2px solid #0f0; box-shadow: 0 0 20px #0f0; object-fit: contain; margin-bottom: 20px; }
+        .caption { font-size: 22px; font-weight: bold; margin: 15px; color: #0f0; min-height: 50px; }
+        .btn { background: #0f0; color: #000; border: none; padding: 15px 30px; font-size: 18px; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .btn:hover { background: #0c0; }
+        #final-screen { width: 100%; padding: 20px; }
+        .cursor { display: inline-block; width: 10px; height: 20px; background: #0f0; animation: blink 0.7s infinite; vertical-align: middle; }
+        @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div id="terminal">
         <div id="lines"></div>
-        <span class="cursor"></span>
+        <span id="cursor" class="cursor"></span>
     </div>
 
     <div id="gallery" class="hidden">
-        <div id="photo-content">
-            <img id="current-img" src="" alt="Bizim Xatirəmiz">
-            <p id="current-caption" class="caption"></p>
-            <button class="btn" onclick="nextPhoto()">Növbəti Xatirə >></button>
-        </div>
+        <img id="current-img" src="" alt="Xatirə">
+        <p id="current-caption" class="caption"></p>
+        <button class="btn" onclick="nextPhoto(event)">Növbəti Addım >></button>
     </div>
 
     <div id="final-screen" class="hidden">
-        <h1 style="font-size: 30px;">SİSTEM YENİLƏNMƏSİ TAMAMLANDI.</h1>
-        <p style="font-size: 24px;">Yeni status: ÖMÜRLÜK YOLDAŞ</p>
-        <p style="font-size: 20px;">Mənimlə evlənərsən?</p>
-        <button class="btn" onclick="alert('Mən dünyanın ən xoşbəxt adamıyam!')">BƏLİ</button>
-        <button class="btn" onclick="alert('Bəli demək istədiyini bilirəm! :)')">ƏLBƏTTƏ BƏLİ</button>
+        <h1 style="font-size: 32px; color: #0f0;">SİSTEM YENİLƏNMƏSİ TAMAMLANDI</h1>
+        <p style="font-size: 24px;">Yeni Status: ÖMÜRLÜK YOLDAŞ</p>
+        <p style="font-size: 20px; margin-bottom: 30px;">Mənimlə evlənərsən?</p>
+        <button class="btn" onclick="alert('Dünyanın ən xoşbəxt adamı mənəm!')">BƏLİ</button>
+        <button class="btn" onclick="alert('Səni çox sevirəm!')" style="margin-left: 10px;">ƏLBƏTTƏ BƏLİ</button>
     </div>
 
-    <iframe id="music" width="0" height="0" src="https://www.youtube.com/embed/WCxXqeJdUEE?autoplay=1" frameborder="0" allow="autoplay"></iframe>
+    <audio id="bg-music" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         const lines = [
-            "> Initializing Love_Protocol_v2.1...",
-            "> Connecting to heart_server.local...",
-            "> Scanning shared_memories...",
-            "> Found 7 significant events...",
-            "> Loading emotional_data... [OK]",
-            "> Sürpriz yükləndi. Başlamaq üçün kliklə..."
+            "> Root access granted...",
+            "> Loading emotional_database.db...",
+            "> Found 7 unique memory_fragments...",
+            "> Optimizing future_parameters...",
+            "> System ready for transition.",
+            "> Sürprizi açmaq üçün bura toxun..."
         ];
 
         let lineIdx = 0;
+        const linesDiv = document.getElementById("lines");
+
         function typeWriter() {
             if (lineIdx < lines.length) {
-                document.getElementById("lines").innerHTML += lines[lineIdx] + "<br>";
+                linesDiv.innerHTML += lines[lineIdx] + "<br>";
                 lineIdx++;
-                setTimeout(typeWriter, 1000);
+                setTimeout(typeWriter, 1200);
             }
         }
 
         const photos = [
-            { src: "1.jpg", text: "Hər şeyin başladığı o ilk gün..." },
-            { src: "2.jpg", text: "Səninlə keçən hər an bir hədiyyədir." },
-            { src: "3.jpg", text: "Ən çox güldüyümüz o məşhur an." },
-            { src: "4.jpg", text: "Birlikdə aşdığımız yollar..." },
-            { src: "5.jpg", text: "Sən yanımda olanda dünya daha rənglidir." },
-            { src: "6.jpg", text: "Hər baxışında yeni bir ümid var." },
-            { src: "7.jpg", text: "Və budur, bizim ən böyük xatirəmiz başlayır..." }
+            { src: "1.JPG", text: "Hər şeyin başladığı o ilk gün..." },
+            { src: "2.JPG", text: "Səninlə hər an bir möcüzədir." },
+            { src: "3.JPG", text: "Birlikdə ən çox güldüyümüz anlar." },
+            { src: "4.JPG", text: "Yolumuz həmişə sevgiylə dolu olsun." },
+            { src: "5.JPG", text: "Sən yanımda olanda dünya daha gözəldir." },
+            { src: "6.JPG", text: "Gələcəyə baxdığım ən gözəl mənzərəsən." },
+            { src: "7.JPG", text: "Və budur, bizim ən böyük hekayəmiz..." }
         ];
 
         let photoIdx = 0;
-        document.body.onclick = function() {
+
+        // Terminal bitdikdən sonra ilk toxunuşda hər şey aktivləşir
+        document.body.addEventListener('click', function() {
             if (lineIdx >= lines.length && document.getElementById("gallery").classList.contains("hidden")) {
+                const audio = document.getElementById("bg-music");
+                audio.play();
+                
                 document.getElementById("terminal").classList.add("hidden");
                 document.getElementById("gallery").classList.remove("hidden");
                 showPhoto();
             }
-        };
+        });
 
         function showPhoto() {
-            document.getElementById("current-img").src = photos[photoIdx].src;
+            const imgElement = document.getElementById("current-img");
+            imgElement.src = photos[photoIdx].src;
             document.getElementById("current-caption").innerText = photos[photoIdx].text;
         }
 
-        function nextPhoto() {
+        function nextPhoto(event) {
+            event.stopPropagation(); // Butona basanda body click-i işləməsin
             photoIdx++;
             if (photoIdx < photos.length) {
                 showPhoto();
